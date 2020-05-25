@@ -117,34 +117,30 @@ public class HomeWorkTest {
         WebElement checkBoxElement = driver.findElement ( By.xpath ( checkBoxXpath) );
         checkBoxElement.click ();
 
-//        String ssq = "//SPAN[@class='validation-error-text'][text()='Введите Фамилию']";
-//        WebElement ssq1 = driver.findElement ( By.xpath ( ssq) );
-//        Assert.assertFalse (  ssq1.isDisplayed ());
 
-
-            Assert.assertEquals ( "Содержимое ссылки не соответствует ожиданию", "Иванов",
-                    driver.findElement ( By.xpath ( "//input[contains(@data-bind, 'value:LastName')]") ).getText () );
+            Assert.assertEquals ( "Заполните текстовое поле", "Иванов",
+                    driver.findElement ( By.xpath ( "//input[contains(@data-bind, 'value:LastName')]") ).getAttribute("value"));
 
             Assert.assertEquals ( "Содержимое ссылки не соответствует ожиданию", "Иван",
-                    driver.findElement ( By.xpath ( "//input[contains(@data-bind, 'value:FirstName')]") ).getText () );
+                    driver.findElement ( By.xpath ( "//input[contains(@data-bind, 'value:FirstName')]") ).getAttribute("value") );
 
-            Assert.assertEquals ( "Содержимое ссылки не соответствует ожиданию", "Москва",
-                    driver.findElement ( By.xpath ( "//select[@name='Region']") ).getText () );
+            Assert.assertEquals ( "Содержимое ссылки не соответствует ожиданию", "77",
+                    driver.findElement ( By.xpath ( "//select[@name='Region']") ).getAttribute("value"));
 
-            Assert.assertEquals ( "Содержимое ссылки не соответствует ожиданию", "9257777777",
-                         driver.findElement ( By.xpath ( "//input[contains(@data-bind, 'value: Phone')]") ).getText () );
+            Assert.assertEquals ( "Содержимое ссылки не соответствует ожиданию", "+7 (925) 777-77-77",
+                         driver.findElement ( By.xpath ( "//input[contains(@data-bind, 'value: Phone')]") ).getAttribute("value"));
 
             Assert.assertEquals ( "Содержимое ссылки не соответствует ожиданию", "qwertyqwerty",
-                           driver.findElement ( By.xpath ( "//input[contains(@data-bind, 'value: Email,')]") ).getText () );
+                           driver.findElement ( By.xpath ( "//input[contains(@data-bind, 'value: Email,')]") ).getAttribute("value"));
 
             Assert.assertEquals ( "Содержимое ссылки не соответствует ожиданию", "29.05.2020",
-                           driver.findElement ( By.xpath ( "//input[@name='ContactDate']") ).getText () );
+                           driver.findElement ( By.xpath ( "//input[@name='ContactDate']") ).getAttribute("value"));
 
             Assert.assertEquals ( "Содержимое ссылки не соответствует ожиданию", "привет привет привет",
-                           driver.findElement ( By.xpath ( "//TEXTAREA[contains(@data-bind, 'value: Comment')]") ).getText () );
+                           driver.findElement ( By.xpath ( "//TEXTAREA[contains(@data-bind, 'value: Comment')]") ).getAttribute("value"));
 
             Assert.assertEquals ( "Содержимое ссылки не соответствует ожиданию", "29.05.2020",
-                           driver.findElement ( By.xpath ( "//input[@name='ContactDate'], 'value: Email,')]") ).getText () );
+                           driver.findElement ( By.xpath ( "//input[@name='ContactDate']") ).getAttribute("value"));
 
 
         String buttonSendRequestXpath = "//BUTTON[@id='button-m']";
