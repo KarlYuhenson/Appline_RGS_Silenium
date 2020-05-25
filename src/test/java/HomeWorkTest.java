@@ -117,6 +117,9 @@ public class HomeWorkTest {
         WebElement checkBoxElement = driver.findElement ( By.xpath ( checkBoxXpath) );
         checkBoxElement.click ();
 
+//        String ssq = "//SPAN[@class='validation-error-text'][text()='Введите Фамилию']";
+//        WebElement ssq1 = driver.findElement ( By.xpath ( ssq) );
+//        Assert.assertFalse (  ssq1.isDisplayed ());
 
 
             Assert.assertEquals ( "Содержимое ссылки не соответствует ожиданию", "Иванов",
@@ -148,6 +151,7 @@ public class HomeWorkTest {
         WebElement buttonSendRequestElement = driver.findElement ( By.xpath ( buttonSendRequestXpath) );
         buttonSendRequestElement.click ();
 
+        wait.until ( ExpectedConditions.elementToBeClickable ( By.xpath ( "//span[@class='validation-error-text']" ) ) )   ;
 
         Assert.assertEquals ( "Содержимое ссылки не соответствует ожиданию", "Введите адрес электронной почты",
                 driver.findElement ( By.xpath ( "//span[@class='validation-error-text']" ) ).getText () );
