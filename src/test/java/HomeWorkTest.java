@@ -6,21 +6,32 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.concurrent.TimeUnit;
+
 import static java.util.concurrent.TimeUnit.*;
 
 public class HomeWorkTest {
     WebDriver driver;
     WebDriverWait wait;
 
+
+
     @Before
     public void startUp ( ) {
         System.setProperty ( "webdriver.chrome.driver" , "driver/chromedriver" );
-        driver = new ChromeDriver ( );
+        DesiredCapabilities capabilities= new DesiredCapabilities();
+        capabilities.setCapability( CapabilityType.PAGE_LOAD_STRATEGY, "eager");
+
+        driver = new ChromeDriver (capabilities );
         driver.manage ().window ().maximize ();
-        driver.manage ().timeouts ().pageLoadTimeout ( 40, SECONDS );
-        wait = new WebDriverWait ( driver,40 );
+        driver.manage ().timeouts ().pageLoadTimeout ( 20, SECONDS );
+        wait = new WebDriverWait ( driver,20 );
+
 
     }
 
@@ -38,6 +49,8 @@ public class HomeWorkTest {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath (dmsLinkXpath)));
         dmsLinkElement.click ();
 
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath ( "//H1[@class='content-document-header']" )));
+
         Assert.assertEquals ( "Содержимое ссылки не соответствует ожиданию", "ДМС — добровольное медицинское страхование",
                driver.findElement ( By.xpath ( "//H1[@class='content-document-header']" ) ).getText () );
 
@@ -47,8 +60,12 @@ public class HomeWorkTest {
         wait.until(ExpectedConditions.elementToBeClickable ( sendRequestButtonElement ));
         sendRequestButtonElement.click ();
 
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated (By.xpath ( "//B[@data-bind='text: options.title']" )));
+
         Assert.assertEquals ( "Содержимое ссылки не соответствует ожиданию", "Заявка на добровольное медицинское страхование",
                 driver.findElement ( By.xpath ( "//B[@data-bind='text: options.title']" ) ).getText () );
+
 
         String firstNameFormXpath = "//input[contains(@data-bind, 'value:LastName')]";
         WebElement firstNameFormElement = driver.findElement ( By.xpath ( firstNameFormXpath) );
@@ -79,28 +96,58 @@ public class HomeWorkTest {
         String eMailPhoneFormXpath = "//input[contains(@data-bind, 'value: Email,')]";
         WebElement eMailPhoneFormElement = driver.findElement ( By.xpath ( eMailPhoneFormXpath) );
         eMailPhoneFormElement.click ();
-        eMailPhoneFormElement.sendKeys("qwerty");
+        eMailPhoneFormElement.sendKeys("qwertyqwerty");
 
         String calendarFormXpath = "//input[@name='ContactDate']";
         WebElement calendarFormElement = driver.findElement ( By.xpath ( calendarFormXpath) );
         calendarFormElement.click ();
 
-        String dateChangeXpath = "//td[contains(@data-datepicker-timestamp, '27')]";
+        wait.until ( ExpectedConditions.elementToBeClickable ( By.xpath ( "//TD[@class='datepicker-day'][text()=' 29 ']" ) ) )   ;
+
+        String dateChangeXpath = "//TD[@class='datepicker-day'][text()=' 29 ']";
         WebElement dateChangeElement = driver.findElement ( By.xpath ( dateChangeXpath) );
         dateChangeElement.click ();
 
-        String commentsFormXpath = "//textarea[contains(@data-bind, 'value: Comment')]";
+        String commentsFormXpath = "//TEXTAREA[contains(@data-bind, 'value: Comment')]";
         WebElement commentsFormElement = driver.findElement ( By.xpath ( commentsFormXpath) );
         commentsFormElement.click ();
-        commentsFormElement.sendKeys("a,a,a,a,a,a,a");
+        commentsFormElement.sendKeys("привет привет привет");
 
         String checkBoxXpath = "//input[@class='checkbox']";
         WebElement checkBoxElement = driver.findElement ( By.xpath ( checkBoxXpath) );
         checkBoxElement.click ();
 
-        String buttonSendRequestXpath = "//input[@class='checkbox']";
+
+
+            Assert.assertEquals ( "Содержимое ссылки не соответствует ожиданию", "Иванов",
+                    driver.findElement ( By.xpath ( "//input[contains(@data-bind, 'value:LastName')]") ).getText () );
+
+            Assert.assertEquals ( "Содержимое ссылки не соответствует ожиданию", "Иван",
+                    driver.findElement ( By.xpath ( "//input[contains(@data-bind, 'value:FirstName')]") ).getText () );
+
+            Assert.assertEquals ( "Содержимое ссылки не соответствует ожиданию", "Москва",
+                    driver.findElement ( By.xpath ( "//select[@name='Region']") ).getText () );
+
+            Assert.assertEquals ( "Содержимое ссылки не соответствует ожиданию", "9257777777",
+                         driver.findElement ( By.xpath ( "//input[contains(@data-bind, 'value: Phone')]") ).getText () );
+
+            Assert.assertEquals ( "Содержимое ссылки не соответствует ожиданию", "qwertyqwerty",
+                           driver.findElement ( By.xpath ( "//input[contains(@data-bind, 'value: Email,')]") ).getText () );
+
+            Assert.assertEquals ( "Содержимое ссылки не соответствует ожиданию", "29.05.2020",
+                           driver.findElement ( By.xpath ( "//input[@name='ContactDate']") ).getText () );
+
+            Assert.assertEquals ( "Содержимое ссылки не соответствует ожиданию", "привет привет привет",
+                           driver.findElement ( By.xpath ( "//TEXTAREA[contains(@data-bind, 'value: Comment')]") ).getText () );
+
+            Assert.assertEquals ( "Содержимое ссылки не соответствует ожиданию", "29.05.2020",
+                           driver.findElement ( By.xpath ( "//input[@name='ContactDate'], 'value: Email,')]") ).getText () );
+
+
+        String buttonSendRequestXpath = "//BUTTON[@id='button-m']";
         WebElement buttonSendRequestElement = driver.findElement ( By.xpath ( buttonSendRequestXpath) );
         buttonSendRequestElement.click ();
+
 
         Assert.assertEquals ( "Содержимое ссылки не соответствует ожиданию", "Введите адрес электронной почты",
                 driver.findElement ( By.xpath ( "//span[@class='validation-error-text']" ) ).getText () );
